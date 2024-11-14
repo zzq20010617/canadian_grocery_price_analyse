@@ -1,0 +1,132 @@
+---
+title: "Comparative Analysis of Milk and Bread Prices Across Canadian Retailers"
+author: 
+  - Ziqi Zhu
+  - Yuanchen Miao
+thanks: "Code and data are available at: https://github.com/zzq20010617/canadian_grocery_price_analyse."
+date: today
+date-format: long
+abstract: ""
+format: pdf
+number-sections: true
+bibliography: references.bib
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+```
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+# Read the CSV file
+bread_data <- read_csv(here::here("data/cleaned_data_bread.csv"))
+milk_data <- read_csv(here::here("data/cleaned_data_milk.csv"))
+```
+
+# Introduction
+
+This study provides a comparative analysis of bread and milk prices across major Canadian retailers, including Save-On-Foods, Loblaws, Voila, Metro, No Frills, and Walmart. By examining the average prices for these essential products, we aim to identify price variations and trends that may indicate different pricing strategies employed by each vendor. Bread and milk were selected for this analysis due to their role as staple goods, and can reflect the general affordability of grocery items in the market. The findings highlight notable price disparities,  with Loblaws tending to have higher prices and Walmart offering relatively lower prices across retailers, and Walmart have a relatively lower across retailers which could influence consumer preferences and purchasing decisions across these retailers.
+
+# Data {#sec-data}
+
+## Overview
+
+The data is come from SQL database from Jacob Filipp [@sqldata_hammer] and cleaned by SQL query. We use the statistical programming programming **language R** [@citeR], and packages **dplyr** [@dplyr], **knitr** [@knitr], **tidyverse** [@tidyverse] and **ggplot2** [@ggplot2] in this paper, 
+
+## Measurement
+	
+The SQL dataset we use captures several key attributes: the vendor name, product name, unit size, brand, current price, and price per unit (standardized, such as per 100g or per liter). By standardizing the units and focusing on consistent product types (milk and bread in this paper), we aimed to minimize variability and allow for fair comparisons across retailers. The data is thus a structured representation of observed price points, capturing real-world pricing dynamics as discrete, comparable entries that facilitate analysis of price trends and disparities among vendors.
+
+# Results
+```{r}
+#| label: tbl_average_bread
+#| tbl-cap: "Average Price of Bread by Vendor in Dollars per 100g"
+#| echo: false
+#| warning: false
+
+# Group by vendor and calculate the average price
+average_price_bread <- bread_data %>%
+  group_by(vendor) %>%
+  summarise(avg_price = mean(price_in_dollars, na.rm = TRUE)) %>%
+  arrange(desc(avg_price)) %>%
+  rename(Vendor = vendor, "Average Price" = avg_price)
+
+# View the result
+kable(average_price_bread)
+```
+As table @tbl_average_bread shows, Save-On-Foods has the highest average price for bread at approximately $1.86 per unit, followed closely by Loblaws at $1.82. Walmart has the lowest average price at around $1.21, suggesting a competitive pricing strategy for bread among major retailers.
+
+```{r}
+#| label: tbl_average_milk
+#| tbl-cap: "Average Price of Milk by Vendor in Dollars per 100ml"
+#| echo: false
+#| warning: false
+
+# Group by vendor and calculate the average price
+average_price_milk <- milk_data %>%
+  group_by(vendor) %>%
+  summarise(avg_price = mean(price_in_dollars, na.rm = TRUE)) %>%
+  arrange(desc(avg_price)) %>%
+  rename(Vendor = vendor, "Average Price" = avg_price)
+
+# View the result
+kable(average_price_milk)
+```
+The table @tbl_average_milk shows the average milk prices, with Loblaws once again having the highest average price at $2.43 per unit, while Voila offers the lowest average milk price at $1.73. Metro and No Frills are also on the higher end for milk prices, with averages above $2.00.
+
+```{r}
+#| echo: false
+#| label: fig-bread-density
+#| fig-cap: "Density Plot of Bread Prices Across Vendors"
+#| warning: false
+
+ggplot(bread_data, aes(x = price_in_dollars, fill = vendor)) +
+  geom_density(alpha = 0.6) +
+  labs(x = "Price in Dollars",
+       y = "Density") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  facet_wrap(~ vendor)
+```
+The density plot of bread price @fig-bread-density shows Walmart, Metro, and No Frills appear to maintain the lowest price range for bread products, while Save On Foods, Voila, and Loblaws display slightly higher price distributions, likely due to a mix of standard and premium product offerings.
+
+```{r}
+#| echo: false
+#| label: fig-milk-density
+#| fig-cap: "Density Plot of Milk Prices Across Vendors"
+#| warning: false
+
+ggplot(milk_data, aes(x = price_in_dollars, fill = vendor)) +
+  geom_density(alpha = 0.6) +
+  labs(x = "Price in Dollars",
+       y = "Density") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  facet_wrap(~ vendor)
+```
+The density plot of milk prices @fig-milk-density indicates that Walmart and Voila appear to target lower-priced products, showing a higher density in the low-price range compared to other retailers. This significant difference in density between low- and mid-priced products for these vendors contributes to a lower average price, as reflected in the summary table.
+
+# Discussion
+
+## Correlation vs. causation {#sec-first-point}
+
+
+## Missing data
+
+
+## Sources of bias
+The data used in this analysis may contain several sources of bias. First, regional bias can affect the results, as retail prices vary by region due to transportation costs, local demand, and market competition. According to the data source, the prices are "online prices with a pickup location in North Toronto," which may not reflect national pricing trends across all locations. Additionally, temporal bias is a concern, as prices fluctuate over time due to promotions, seasonal pricing, and supply chain factors. The unit price data we are using reflects the latest available prices in the dataset. If these prices were collected at a particular time or over a short period, such as during a promotional event, they may not represent typical prices across a broader period of time.
+
+\newpage
+
+
+# References
