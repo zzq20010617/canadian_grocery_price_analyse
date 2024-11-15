@@ -6,7 +6,7 @@ author:
 thanks: "Code and data are available at: https://github.com/zzq20010617/canadian_grocery_price_analyse."
 date: today
 date-format: long
-abstract: ""
+abstract: "We analyzes grocery pricing data from an SQL database, focusing on the prices of bread and milk across several major Canadian grocery stores: Save-On-Foods, Loblaws, Voila, Metro, No Frills, and Walmart. By comparing the mean prices and generating density plots for each product, the study examines pricing trends across retailers. Findings indicate that Walmart, Metro, and No Frills consistently offer lower-priced bread products, while Save-On-Foods, Voila, and Loblaws have higher price distributions, likely due to the inclusion of premium items. For milk, Walmart and Voila maintain a low-price range, reflected in a high density of low-cost options and a lower average price overall. These findings are helping public to decide which grocery store they should go for groceries by comparing price and shows the price competition of grocery stores"
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -48,7 +48,7 @@ The SQL dataset we use captures several key attributes: the vendor name, product
 
 # Results
 ```{r}
-#| label: tbl_average_bread
+#| label: tbl-average-bread
 #| tbl-cap: "Average Price of Bread by Vendor in Dollars per 100g"
 #| echo: false
 #| warning: false
@@ -63,10 +63,10 @@ average_price_bread <- bread_data %>%
 # View the result
 kable(average_price_bread)
 ```
-As table @tbl_average_bread shows, Save-On-Foods has the highest average price for bread at approximately $1.86 per unit, followed closely by Loblaws at $1.82. Walmart has the lowest average price at around $1.21, suggesting a competitive pricing strategy for bread among major retailers.
+As table @tbl-average-bread shows, Save-On-Foods has the highest average price for bread at approximately $1.86 per unit, followed closely by Loblaws at $1.82. Walmart has the lowest average price at around $1.21, suggesting a competitive pricing strategy for bread among major retailers.
 
 ```{r}
-#| label: tbl_average_milk
+#| label: tbl-average-milk
 #| tbl-cap: "Average Price of Milk by Vendor in Dollars per 100ml"
 #| echo: false
 #| warning: false
@@ -81,7 +81,7 @@ average_price_milk <- milk_data %>%
 # View the result
 kable(average_price_milk)
 ```
-The table @tbl_average_milk shows the average milk prices, with Loblaws once again having the highest average price at $2.43 per unit, while Voila offers the lowest average milk price at $1.73. Metro and No Frills are also on the higher end for milk prices, with averages above $2.00.
+The table @tbl-average-milk shows the average milk prices, with Loblaws once again having the highest average price at $2.43 per unit, while Voila offers the lowest average milk price at $1.73. Metro and No Frills are also on the higher end for milk prices, with averages above $2.00.
 
 ```{r}
 #| echo: false
@@ -117,11 +117,13 @@ The density plot of milk prices @fig-milk-density indicates that Walmart and Voi
 
 # Discussion
 
-## Correlation vs. causation {#sec-first-point}
+## Correlation and causation {#sec-first-point}
 
+In analyzing the pricing data of milk and bread across different grocery stores, our data show that Walmart and Voila generally offer lower prices for milk, which correlates with their positioning as discount retailers. The brand and quality of bread and milk that Walmart and Voila sells may be worse than the brand of milk and bread sells in Save-On-Foods, Loblaws and Metro who show slightly higher price. Grocery retailers like Loblaws, Save-On-Foods and Metro are including premium products. With different selling strategies of grocery stores they might have different cost of these products. We are not comparing the quality and brand of theses retailers and this will be a factor that influences the price of milk and bread they sell.
 
 ## Missing data
 
+In our dataset, data on brands of milk and bread is missing, making it challenging to compare the quality of goods across brands. This lack of data introduces a limitation in our price analysis, as we cannot account for brand-related costs or directly assess price differences relative to product quality. Consequently, our price comparisons may be less accurate, potentially disadvantaging brands that offer higher-quality, premium goods, which are typically sold at higher prices. Without accounting for these brand variations in quality and associated costs, our analysis may inadvertently favor retailers with lower prices, even when those prices reflect differences in quality standards rather than simply cost efficiency. This limitation highlights the importance of complete data on brand quality when making fair comparisons across products and retailers.
 
 ## Sources of bias
 The data used in this analysis may contain several sources of bias. First, regional bias can affect the results, as retail prices vary by region due to transportation costs, local demand, and market competition. According to the data source, the prices are "online prices with a pickup location in North Toronto," which may not reflect national pricing trends across all locations. Additionally, temporal bias is a concern, as prices fluctuate over time due to promotions, seasonal pricing, and supply chain factors. The unit price data we are using reflects the latest available prices in the dataset. If these prices were collected at a particular time or over a short period, such as during a promotional event, they may not represent typical prices across a broader period of time.
