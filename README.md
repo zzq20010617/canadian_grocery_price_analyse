@@ -26,7 +26,7 @@ The repo is structured as:
 
   
 - `.gitignore`: Specifies files to ignore in version control.
-- `2024_USelection_prediction.Rproj`: The R project file.
+- `canadian_grocery_price_analyse.Rproj`: The R project file.
 - `README.md`: This file.
   
 
